@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InalaVac - Projeto ImunAr</title>
+    <style>
+        :root {
+            --primary: #00ffcc;
+            --dark: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            width: 100%;
+            box-sizing: border-box;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* Estilização para destacar a marca InalaVac */
+        .brand-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .brand-name span {
+            color: var(--primary);
+        }
+
+        h1 {
+            color: var(--text);
+            margin: 5px 0 0 0;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .simulator-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            border: 1px solid #334155;
+        }
+
+        .cabin-display {
+            width: 200px;
+            height: 250px;
+            border: 3px solid #64748b;
+            border-radius: 8px;
+            margin: 20px auto;
+            position: relative;
+            background: #020617;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .human-model {
+            font-size: 80px;
+            z-index: 2;
+            transition: all 0.5s;
+        }
+
+        .mist {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: radial-gradient(circle, rgba(0,255,204,0.4) 0%, rgba(0,255,204,0) 70%);
+            z-index: 1;
+            transition: height 2s ease-in-out;
+        }
+
+        .shield-active {
+            filter: drop-shadow(0 0 15px var(--primary));
+        }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0,255,204,0.6);
+        }
+
+        .status-text {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-box {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            text-align: center;
+            width: 100%;
+            border-top: 1px solid #334155;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-name">Inala<span>Vac</span></div>
+        <h1>Projeto ImunAr</h1>
+        <p>Tecnologia de Imunização Voluntária por Microaerossol de Mucosa</p>
+    </header>
+
+    <main>
+        <!-- SEÇÃO DO SIMULADOR INTERATIVO -->
+        <section class="simulator-card">
+            <h2>Simulador de inalação normobárica BioSegura InalaVac</h2>
+            <p>Clique no botão para simular o processo automatizado de inalação e neutralização biológica.</p>
+            
+            <div class="cabin-display">
+                <div class="mist" id="mistEffect"></div>
+                <div class="human-model" id="humanModel">👤</div>
+            </div>
+
+            <button class="btn-action" onclick="iniciarSimulacao()">Iniciar Sistema InalaVac</button>
+            <div class="status-text" id="statusMessage">Sistema Pronto. Aguardando ativação voluntária...</div>
+            
+            <!-- BOTÃO ADICIONADO COM O LINK DO FORMULÁRIO -->
+            <div style="margin-top: 25px; border-top: 1px dashed #334155; padding-top: 20px;">
+                <p style="margin-bottom: 15px; font-size: 0.95rem; opacity: 0.9;">Participe da nossa pesquisa acadêmica sobre a aceitação do projeto:</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc_OP3woNtVIKPJFeKu7sP7BPO7Ke4ShhjTNUrGHLZw4Ypa1Q/viewform?usp=publish-editor" target="_blank" class="btn-action" style="text-decoration: none; display: inline-block; background-color: #f8fafc; color: #0f172a;">Acessar Formulário InalaVac</a>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE EXPLICAÇÃO DO PROJETO -->
+        <section class="info-grid">
+            <div class="info-box">
+                <h3>🛡️ Pilar Ético InalaVac</h3>
+                <p>O processo é 100% individual e voluntário. O sistema de inalação normobárica é utilizado para que o aerossol não escape para o ambiente externo.</p>
+            </div>
+            <div class="info-box">
+                <h3>🧬 Pilar Biológico</h3>
+                <p>A névoa microscópica ativa os anticorpos IgA nas mucosas do nariz e da garganta, criando uma barreira de neutralização imediata contra a VSR e pneumonia.</p>
+            </div>
+            <!-- NOVAS SEÇÕES ADICIONADAS ABAIXO SEM ALTERAR A ESTRUTURA ANTERIOR -->
+            <div class="info-box" style="margin-top: 20px;">
+                <h3>📋 Instruções de Aplicação</h3>
+                <p>A aplicação é feita de maneira simples: O usuário Utiliza o sistema de inalação normobárica e realiza uma respiração normal enquanto a névoa é liberada por 2 a 5 minutos. O composto aplicado consiste em uma solução salina estéril contendo anticorpos monoclonais e estabilizadores orgânicos que protegem e blindam a mucosa respiratória superior de forma rápida e indolor.</p>
+            </div>
+            <div class="info-box" style="margin-top: 20px;">
+                <h3>🏛️ Regulamentação e Segurança Governamental</h3>
+                <p>Este sistema é totalmente ético e certificado pelos órgãos de saúde governamentais competentes. O sistema de inalação opera sob protocolos estritos de biossegurança de nível laboratorial. O uso da Máscara Facial de CPAP ResMed AirFit F20 garante que nenhuma partícula seja dispersa de forma descontrolada em locais públicos, respeitando a liberdade individual e a integridade de todas as pessoas ao redor.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 InalaVac Biotecnologia. Desenvolvido para apresentação acadêmica.</p>
+    </footer>
+
+    <script>
+        function iniciarSimulacao() {
+            const mist = document.getElementById('mistEffect');
+            const human = document.getElementById('humanModel');
+            const status = document.getElementById('statusMessage');
+
+            // Passo 1: Liberação do aerossol
+            status.innerHTML = "🔹 InalaVac: Liberando microaerossol dosado (1-5 mícrons)...";
+            status.style.color = "#00ffcc";
+            mist.style.height = "100%";
+
+            // Passo 2: Absorção e Imunização
+            setTimeout(() => {
+                status.innerHTML = "🧬 InalaVac: Contato com a mucosa detectado. Ativando anticorpos IgA...";
+                human.classList.add('shield-active');
+            }, 2500);
+
+            // Passo 3: Finalização e Exaustão
+            setTimeout(() => {
+                status.innerHTML = "✅ Concluído! Sistema de exaustão ativado pela tecnologia InalaVac.";
+                status.style.color = "#4ade80";
+                mist.style.height = "0%";
+            }, 5500);
+
+            // Passo 4: Reset do Sistema para permitir novos testes
+            setTimeout(() => {
+                status.innerHTML = "Sistema Pronto. Aguardando ativação voluntária...";
+                status.style.color = "#f8fafc";
+                human.classList.remove('shield-active');
+            }, 9000);
+        }
+    </script>
+</body>
+</html>
